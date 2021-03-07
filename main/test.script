@@ -1,5 +1,6 @@
 local csvloader = require("imports.csvloader")
 local files = require("imports.files")
+local uniquechars = require("imports.uniquechars")
 
 local languages = {}
 languages.en = "English"
@@ -59,7 +60,16 @@ function init(self)
 	--pprint(csv2)
 	local locale2 = build_locale_table(csv2)
 	pprint(locale2)
-	
+
+	if is_editor() then
+		local extra_chars = uniquechars.get_unique_chars(locale2)
+
+		pprint(extra_chars) -- put these into your .font extra chars files
+		
+		local file = io.open( "extra_chars.txt", "w" )
+		file:write( extra_chars )
+		file:close()
+	end
 end
 
 function final(self)
